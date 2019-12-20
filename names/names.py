@@ -10,11 +10,60 @@ f = open('names_2.txt', 'r')
 names_2 = f.read().split("\n")  # List containing 10000 names
 f.close()
 
+class BST:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+    
+    def insert(self, value):
+        if self.value <= value:
+            # go right
+            if self.right:
+                self.right.insert(value)
+            else:
+                self.right = BST(value)
+        else:
+            # go left
+            if self.left:
+                self.left.insert(value)
+            else:
+                self.left = BST(value)
+        
+    def contains(self, target):
+        if self.value == target:
+            return True
+        elif self.value < target:
+            # go right
+            if self.right:
+                return self.right.contains(target)
+            else:
+                return False
+        elif self.value > target:
+            if self.left:
+                return self.left.contains(target)
+            else:
+                return False
+
+# **   PREVIOUS   **
+# O(n^2)
 duplicates = []
-for name_1 in names_1:
-    for name_2 in names_2:
-        if name_1 == name_2:
-            duplicates.append(name_1)
+# for name_1 in names_1:
+#     for name_2 in names_2:
+#         if name_1 == name_2:
+#             duplicates.append(name_1)
+
+# **   USING BST   **
+# O(h) (worst-case)
+# O(n)
+x = BST(names_1[0])
+
+for name in names_1:
+    x.insert(name)
+
+for name in names_2:
+    if x.contains(name):
+        duplicates.append(name)
 
 end_time = time.time()
 print (f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
