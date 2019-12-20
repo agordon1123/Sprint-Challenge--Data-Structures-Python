@@ -15,15 +15,26 @@ class RingBuffer:
             self.storage.delete(self.current)
             # set new current
             self.current = new_cur.next
-            
+
+            if self.current == None:
+                self.current = self.storage.head
+
             # insert before new_cur
             # if new_cur.prev == None:
             #     new_cur.insert_before(item)
             #     self.storage.length += 1
             # else:
 
-            self.current.insert_before(item)
-            self.storage.length += 1
+            if self.current.prev == None:
+                self.storage.add_to_head(item)
+            elif self.current.next == None:
+                self.current.insert_before(item)
+                self.storage.length += 1
+                # self.current = self.storage.head
+            else:
+                self.current.insert_before(item)
+                self.storage.length += 1
+
 
             # new_cur.insert_after(item)
             # self.storage.length += 1
@@ -43,7 +54,7 @@ class RingBuffer:
         # Note:  This is the only [] allowed
         list_buffer_contents = []
 
-        # TODO: Your code here
+        # TO DO: Your code here
         cur = self.storage.head
         while cur.next != None:
             list_buffer_contents.append(cur.value)
