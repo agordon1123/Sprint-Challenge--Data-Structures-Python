@@ -10,14 +10,23 @@ class RingBuffer:
     def append(self, item):
         if self.storage.length == self.capacity:
             # full
-            new_cur = self.current.next
+            new_cur = self.current
             # delete cur
             self.storage.delete(self.current)
             # set new current
-            self.current = new_cur
+            self.current = new_cur.next
+            
             # insert before new_cur
-            new_cur.insert_after(item)
+            # if new_cur.prev == None:
+            #     new_cur.insert_before(item)
+            #     self.storage.length += 1
+            # else:
+
+            self.current.insert_before(item)
             self.storage.length += 1
+
+            # new_cur.insert_after(item)
+            # self.storage.length += 1
 
             # if new_cur == self.storage.head:
             #     self.storage.add_to_head(item)
